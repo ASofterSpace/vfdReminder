@@ -1,5 +1,6 @@
 package reminder.vfd.asofterspace.com.vfdreminder;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,13 +14,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import static reminder.vfd.asofterspace.com.vfdreminder.NotificationUtils.KEY_NOTIFICATION_ID;
+import static reminder.vfd.asofterspace.com.vfdreminder.NotificationUtils.KEY_RESULT;
+
 public class MainActivity extends AppCompatActivity {
 
     private Context context;
 
-    private int latestNotification = 0;
-
     final private static String REMINDER_CHANNEL_ID = "ff25erinnerungen";
+
+    private boolean channelHasBeenSetUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,29 +32,34 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
 
-        final Button bChannel = this.findViewById(R.id.channelButton);
-        bChannel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setupNotificationChannel();
-            }
-        });
-
-        final Button bTest = this.findViewById(R.id.testButton);
-        bTest.setOnClickListener(new View.OnClickListener() {
+        final Button bTestWithBtn = this.findViewById(R.id.notificationBtn);
+        bTestWithBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addNotification();
             }
         });
 
-        final Button bTestWithBtn = this.findViewById(R.id.testButtonWithBtn);
-        bTestWithBtn.setOnClickListener(new View.OnClickListener() {
+        final Button bYesBtn = this.findViewById(R.id.yesBtn);
+        bYesBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                addNotificationWithButton();
+                answerQuestion(true);
+            }
+        });
+
+        final Button bNoBtn = this.findViewById(R.id.noBtn);
+        bNoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                answerQuestion(false);
             }
         });
     }
 
-    private void setupNotificationChannel() {
+    private void ensureNotificationChannelExists() {
+
+        if (channelHasBeenSetUp) {
+            return;
+        }
+
         // only actually play with the channel if the API is high enough
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -62,56 +71,45 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
+
+        channelHasBeenSetUp = true;
     }
 
     private void addNotification() {
 
-        // Tell android what to do when someone clicks on our notification
-        Intent intent = new Intent(this, this.getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent tapIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        ensureNotificationChannelExists();
+
+        int notificationId = NotificationUtils.getNotificationId();
+
+        // We create the intent to open the select yes / no activity
+        Intent selectYesNoIntent = new Intent(this, MainActivity.class);
+        selectYesNoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        selectYesNoIntent.putExtra(KEY_NOTIFICATION_ID, notificationId);
+
+        // Now we create another intent, which is to launch the select yes / no intent upon a tap on a notification
+        PendingIntent tapIntent = PendingIntent.getActivity(this, 0, selectYesNoIntent, 0);
 
         // Actually create our notification
         NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
-                .setSmallIcon(R.drawable.vfd_logo_1)
+                .setSmallIcon(R.drawable.ic_stat_vfd_logo_1)
                 .setContentTitle("FF25 Erinnerung")
                 .setContentText("Am Freitag ist Dienst. Kommst du?")
                 .setContentIntent(tapIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true); // autocancel cancels when the user taps - may not be what we want!
+                .setAutoCancel(false);
+        // autocancel cancels when the user taps - but we want to cancel upon select, not upon tap!
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-        // The ID needs to be UNIQUE for each notification instance!
-        latestNotification++;
-        notificationManager.notify(latestNotification, notBuilder.build());
+        // We actually invoke the notification
+        notificationManager.notify(notificationId, notBuilder.build());
     }
 
-    private void addNotificationWithButton() {
+    private void answerQuestion(boolean affirmative) {
 
-        // Tell android what to do when someone clicks on a button in our notification
-        Intent affirmative = new Intent(this, ReminderConfirmActivity.class);
-        affirmative.setAction("JA");
-        PendingIntent affirmativeIntent = PendingIntent.getBroadcast(this, 0, affirmative, 0);
-        Intent negative = new Intent(this, ReminderDenyActivity.class);
-        negative.setAction("NEIN");
-        PendingIntent negativeIntent = PendingIntent.getBroadcast(this, 0, negative, 0);
-
-        // Actually create our notification
-        NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
-                .setSmallIcon(R.drawable.vfd_logo_1)
-                .setContentTitle("FF25 Erinnerung")
-                .setContentText("Am Freitag ist Dienst. Kommst du?")
-                .addAction(R.drawable.vfd_logo_1, "ja", affirmativeIntent)
-                .addAction(R.drawable.vfd_logo_1, "nein", negativeIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true); // autocancel cancels when the user taps - may not be what we want!
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // The ID needs to be UNIQUE for each notification instance!
-        latestNotification++;
-        notificationManager.notify(latestNotification, notBuilder.build());
+        Intent showResultMsgIntent = new Intent(this, ResultActivity.class);
+        showResultMsgIntent.putExtra(KEY_RESULT, affirmative);
+        startActivity(showResultMsgIntent);
     }
 
 }
