@@ -1,4 +1,4 @@
-package reminder.vfd.asofterspace.com.vfdreminder;
+package com.asofterspace.vfd.reminder;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

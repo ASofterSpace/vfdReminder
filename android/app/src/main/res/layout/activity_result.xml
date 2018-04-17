@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="reminder.vfd.asofterspace.com.vfdreminder.ResultActivity">
+    tools:context="com.asofterspace.vfd.reminder.ResultActivity">
 
     <TextView
         android:id="@+id/resultText"

@@ -1,6 +1,5 @@
-package reminder.vfd.asofterspace.com.vfdreminder;
+package com.asofterspace.vfd.reminder;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,8 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import static reminder.vfd.asofterspace.com.vfdreminder.NotificationUtils.KEY_NOTIFICATION_ID;
-import static reminder.vfd.asofterspace.com.vfdreminder.NotificationUtils.KEY_RESULT;
+import reminder.vfd.asofterspace.com.vfdreminder.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // We create the intent to open the select yes / no activity
         Intent selectYesNoIntent = new Intent(this, MainActivity.class);
         selectYesNoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        selectYesNoIntent.putExtra(KEY_NOTIFICATION_ID, notificationId);
+        selectYesNoIntent.putExtra(NotificationUtils.KEY_NOTIFICATION_ID, notificationId);
 
         // Now we create another intent, which is to launch the select yes / no intent upon a tap on a notification
         PendingIntent tapIntent = PendingIntent.getActivity(this, 0, selectYesNoIntent, 0);
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void answerQuestion(boolean affirmative) {
 
         Intent showResultMsgIntent = new Intent(this, ResultActivity.class);
-        showResultMsgIntent.putExtra(KEY_RESULT, affirmative);
+        showResultMsgIntent.putExtra(NotificationUtils.KEY_RESULT, affirmative);
         startActivity(showResultMsgIntent);
     }
 

@@ -1,10 +1,17 @@
-package reminder.vfd.asofterspace.com.vfdreminder;
+package com.asofterspace.vfd.reminder;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import static reminder.vfd.asofterspace.com.vfdreminder.NotificationUtils.KEY_RESULT;
+import reminder.vfd.asofterspace.com.vfdreminder.R;
+
+import static com.asofterspace.vfd.reminder.NotificationUtils.KEY_RESULT;
+
+/**
+ * This class represents an activity that shows a message to the
+ * user as a result of the user's actions.
+ */
 
 public class ResultActivity extends AppCompatActivity {
 
