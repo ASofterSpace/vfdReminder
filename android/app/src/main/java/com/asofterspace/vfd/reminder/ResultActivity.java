@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import reminder.vfd.asofterspace.com.vfdreminder.R;
 
-import static com.asofterspace.vfd.reminder.NotificationUtils.KEY_RESULT;
+import static com.asofterspace.toolbox.notification.NotificationUtils.KEY_RESULT;
 
 /**
  * This class represents an activity that shows a message to the

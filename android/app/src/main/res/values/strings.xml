@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FF25 Erinnerungsapp</string>
+    <string name="title_activity_show_responses">ShowResponsesActivity</string>
 </resources>

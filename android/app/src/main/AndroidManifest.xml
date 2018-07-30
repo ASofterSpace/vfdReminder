@@ -16,7 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.asofterspace.vfd.reminder.ResultActivity"></activity>
+        <activity android:name="com.asofterspace.vfd.reminder.ResultActivity" />
+        <activity
+            android:name="com.asofterspace.vfd.reminder.ShowResponsesActivity"
+            android:label="@string/title_activity_show_responses"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

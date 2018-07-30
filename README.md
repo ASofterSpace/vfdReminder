@@ -30,6 +30,18 @@ In Android Studio, you can build this in two different ways:
 
 Either way, after you are done building the APK fine, you can either load it in an emulator (which I never got to work because my computer is real slow and old), or load it onto your Android smartphonedevicething. (To do so, just connect your phone via USB to the computer, copy the file over to a folder inside the phone, open the file on your phone with any file browser app, and then click yes to install it. When juggling different versions - e.g. ones downloaded from the Play Store and ones manually installed - you might have to manually uninstall the previous version of the app first via Settings > Apps on the phonedevicething.)
 
+## Internal Structure
+
+The Android client on the smartphone sends a request on initial startup, and if running for a longer time once a day, asking the server about upcoming events.
+The server replies to these requests, providing the events from its internal SQL datastructure.
+
+When the client notices an event coming close, it shows a notification to the user. The result of this is sent to the server.
+
+The list is open for everyone (or should it not be?), and everyone can check their app to see which other people responded how.
+The server for this provides the data, again upon request of the client.
+
+For now, there is no pretty way of entering event data to the server; we will just do that directly in the backend.
+
 ## License
 
 We at A Softer Space really love the Unlicense, which pretty much allows anyone to do anything with this source code.
