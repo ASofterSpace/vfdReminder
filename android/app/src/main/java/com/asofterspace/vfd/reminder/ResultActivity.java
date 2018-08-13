@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.asofterspace.vfd.reminder.events.UpcomingEvent;
+import com.asofterspace.vfd.reminder.utils.UpcomingEventUtils;
+
 import reminder.vfd.asofterspace.com.vfdreminder.R;
 
 import static com.asofterspace.toolbox.notification.NotificationUtils.KEY_RESULT;
@@ -24,10 +27,19 @@ public class ResultActivity extends AppCompatActivity {
 
         final TextView resultText = this.findViewById(R.id.resultText);
 
+        String dateStr = "";
+
+        int eventId = getIntent().getIntExtra(UpcomingEventUtils.KEY_EVENT, 0);
+        UpcomingEvent event = UpcomingEventUtils.getUpcomingEventById(eventId);
+
+        if (event != null) {
+            dateStr = event.getStrDate();
+        }
+
         if (affirmative) {
-            resultText.setText("Super, voll gut dass du kommst!");
+            resultText.setText("Super, voll gut dass du " + dateStr + " kommst!");
         } else {
-            resultText.setText("Na okay, mit schwerem Herzen nehmen wir deine Abwesenheit mal hin...");
+            resultText.setText("Mit schwerem Herzen nehmen wir deine Abwesenheit " + dateStr + " mal hin...");
         }
     }
 }

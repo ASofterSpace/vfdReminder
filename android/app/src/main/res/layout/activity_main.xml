@@ -20,16 +20,6 @@
         android:text="Willkommen bei der FF25 Erinnerungsapp!\nHier sind die nächsten Termine:"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/notificationBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Debug: Erinnerung anzeigen"/>
-
     <ScrollView
         android:id="@+id/dateContainer"
         android:layout_width="match_parent"
@@ -40,39 +30,10 @@
         android:layout_marginTop="8dp">
 
         <LinearLayout
+            android:id="@+id/dateContainerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Kommst du zum regulären Dienst am Freitag den 13. März 2027?"
-                android:textSize="18sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <Button
-                    android:id="@+id/yesBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Ja, ich komme" />
-
-                <Button
-                    android:id="@+id/noBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nein, ich kann nicht" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </ScrollView>

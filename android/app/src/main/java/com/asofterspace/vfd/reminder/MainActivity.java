@@ -10,12 +10,18 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.asofterspace.vfd.reminder.events.UpcomingEvent;
 import com.asofterspace.vfd.reminder.utils.NotificationUtils;
 import com.asofterspace.vfd.reminder.utils.UpcomingEventUtils;
 import com.asofterspace.vfd.reminder.utils.UpcomingEventsInitializedCallback;
+
+import java.util.List;
 
 import reminder.vfd.asofterspace.com.vfdreminder.R;
 
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements UpcomingEventsIni
 
         UpcomingEventUtils.initialize(this);
 
+        /*
         final Context context = this;
 
         final Button bTestWithBtn = this.findViewById(R.id.notificationBtn);
@@ -36,30 +43,66 @@ public class MainActivity extends AppCompatActivity implements UpcomingEventsIni
                 NotificationUtils.addNotification(context);
             }
         });
-
-        final Button bYesBtn = this.findViewById(R.id.yesBtn);
-        bYesBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                answerQuestion(true);
-            }
-        });
-
-        final Button bNoBtn = this.findViewById(R.id.noBtn);
-        bNoBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                answerQuestion(false);
-            }
-        });
+        */
     }
 
     public void initDone() {
-        // TODO - the UpcomingEventUtils is ready; let's display some dates to the user!
+        // the UpcomingEventUtils is ready; let's display some dates to the user!
+
+        List<UpcomingEvent> upcomingEvents = UpcomingEventUtils.getUpcomingEvents();
+
+        for (UpcomingEvent event : upcomingEvents) {
+            showEventToUser(event);
+        }
     }
 
-    private void answerQuestion(boolean affirmative) {
+    private void showEventToUser(final UpcomingEvent event) {
+
+        LinearLayout parentLayout = findViewById(R.id.dateContainerLayout);
+        LinearLayout.LayoutParams paras = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        TextView nextText = new TextView(this);
+        nextText.setText("Kommst du zu " + event.getName() + " " + event.getStrDate() + "?");
+        nextText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        parentLayout.addView(nextText, paras);
+
+        LinearLayout btnLayout = new LinearLayout(this);
+        btnLayout.setOrientation(LinearLayout.HORIZONTAL);
+        btnLayout.setWeightSum(2);
+        parentLayout.addView(btnLayout, paras);
+
+        LinearLayout.LayoutParams btnParas = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        // gives each of the events a bit of distance to the others
+        btnParas.setMargins(0, 0, 0, 8);
+
+        Button bYesBtn = new Button(this);
+        bYesBtn.setText("Ja, ich komme");
+        bYesBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                answerQuestion(event, true);
+            }
+        });
+        btnLayout.addView(bYesBtn, btnParas);
+
+        Button bNoBtn = new Button(this);
+        bNoBtn.setText("Nein, ich kann nicht");
+        bNoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                answerQuestion(event, false);
+            }
+        });
+        btnLayout.addView(bNoBtn, btnParas);
+    }
+
+    private void answerQuestion(UpcomingEvent event, boolean canGo) {
+
+        event.setAnswerByUser(canGo);
 
         Intent showResultMsgIntent = new Intent(this, ResultActivity.class);
-        showResultMsgIntent.putExtra(com.asofterspace.toolbox.notification.NotificationUtils.KEY_RESULT, affirmative);
+        showResultMsgIntent.putExtra(com.asofterspace.toolbox.notification.NotificationUtils.KEY_RESULT, canGo);
+        showResultMsgIntent.putExtra(UpcomingEventUtils.KEY_EVENT, event.getId());
         startActivity(showResultMsgIntent);
     }
 

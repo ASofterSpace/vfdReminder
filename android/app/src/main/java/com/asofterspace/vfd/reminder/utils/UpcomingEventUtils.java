@@ -16,6 +16,8 @@ public class UpcomingEventUtils {
 
     private static List<UpcomingEvent> upcomingEvents = new ArrayList<>();
 
+    final public static String KEY_EVENT = "EVENT";
+
     /**
      * This is called to initialize the internal list of upcoming events, e.g. by syncing events
      * from the server.
@@ -38,6 +40,21 @@ public class UpcomingEventUtils {
         upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime()));
 
         callback.initDone();
+    }
+
+    public static List<UpcomingEvent> getUpcomingEvents() {
+        return upcomingEvents;
+    }
+
+    public static UpcomingEvent getUpcomingEventById(int eventId) {
+
+        for (UpcomingEvent event : upcomingEvents) {
+            if (eventId == event.getId()) {
+                return event;
+            }
+        }
+
+        return null;
     }
 
 }
