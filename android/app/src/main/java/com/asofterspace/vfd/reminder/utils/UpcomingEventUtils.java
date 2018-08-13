@@ -29,15 +29,15 @@ public class UpcomingEventUtils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, 2);
-        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime()));
+        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime(), null));
         cal.add(Calendar.DATE, 7);
-        upcomingEvents.add(new UpcomingEvent("Regulärer Dienst", false, cal.getTime()));
+        upcomingEvents.add(new UpcomingEvent("Regulärer Dienst", false, cal.getTime(), null));
         cal.add(Calendar.DATE, 7);
-        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime()));
+        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime(), null));
         cal.add(Calendar.DATE, 7);
-        upcomingEvents.add(new UpcomingEvent("Regulärer Dienst", false, cal.getTime()));
+        upcomingEvents.add(new UpcomingEvent("Regulärer Dienst", false, cal.getTime(), null));
         cal.add(Calendar.DATE, 7);
-        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime()));
+        upcomingEvents.add(new UpcomingEvent("Extradienst", false, cal.getTime(), null));
 
         callback.initDone();
     }

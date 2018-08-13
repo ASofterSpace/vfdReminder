@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.asofterspace.vfd.reminder.MainActivity;
 import com.asofterspace.vfd.reminder.ResultActivity;
+import com.asofterspace.vfd.reminder.events.UpcomingEvent;
 
 import reminder.vfd.asofterspace.com.vfdreminder.R;
 
@@ -46,7 +47,7 @@ public class NotificationUtils {
         channelHasBeenSetUp = true;
     }
 
-    public static void addNotification(Context context) {
+    public static void addNotification(Context context, UpcomingEvent event) {
 
         ensureNotificationChannelExists(context);
 
@@ -64,7 +65,7 @@ public class NotificationUtils {
         NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_vfd_logo_1)
                 .setContentTitle("FF25 Erinnerung")
-                .setContentText("Am Freitag ist regulärer Dienst. Kommst du?")
+                .setContentText("Am " + event.getStrDate() + " ist " + event.getName() + ". Kommst du?")
                 .setContentIntent(tapIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(false);

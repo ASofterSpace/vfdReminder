@@ -33,27 +33,26 @@ public class MainActivity extends AppCompatActivity implements UpcomingEventsIni
         setContentView(R.layout.activity_main);
 
         UpcomingEventUtils.initialize(this);
-
-        /*
-        final Context context = this;
-
-        final Button bTestWithBtn = this.findViewById(R.id.notificationBtn);
-        bTestWithBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                NotificationUtils.addNotification(context);
-            }
-        });
-        */
     }
 
     public void initDone() {
-        // the UpcomingEventUtils is ready; let's display some dates to the user!
 
+        // the UpcomingEventUtils is ready; let's display some dates to the user!
         List<UpcomingEvent> upcomingEvents = UpcomingEventUtils.getUpcomingEvents();
 
         for (UpcomingEvent event : upcomingEvents) {
             showEventToUser(event);
         }
+
+        // and let's show some notifications too!
+        for (UpcomingEvent event : upcomingEvents) {
+            if (event.notificationIsNecessary()) {
+                NotificationUtils.addNotification(this, event);
+            }
+        }
+
+        // TODO :: use AlarmManager or something similar to periodically (at least once a day) go
+        // through the upcoming events and check if new notifications should be spawned!
     }
 
     private void showEventToUser(final UpcomingEvent event) {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements UpcomingEventsIni
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         TextView nextText = new TextView(this);
-        nextText.setText("Kommst du zu " + event.getName() + " " + event.getStrDate() + "?");
+        nextText.setText("Kommst du zu " + event.getName() + " am " + event.getStrDate() + "?");
         nextText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         parentLayout.addView(nextText, paras);
 

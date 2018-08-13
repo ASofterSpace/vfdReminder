@@ -37,9 +37,9 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         if (affirmative) {
-            resultText.setText("Super, voll gut dass du " + dateStr + " kommst!");
+            resultText.setText("Super, voll gut dass du am " + dateStr + " kommst!");
         } else {
-            resultText.setText("Mit schwerem Herzen nehmen wir deine Abwesenheit " + dateStr + " mal hin...");
+            resultText.setText("Mit schwerem Herzen nehmen wir deine Abwesenheit am " + dateStr + " mal hin...");
         }
     }
 }

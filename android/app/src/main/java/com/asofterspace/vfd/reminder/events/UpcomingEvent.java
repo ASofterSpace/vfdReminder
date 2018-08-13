@@ -1,5 +1,7 @@
 package com.asofterspace.vfd.reminder.events;
 
+import com.asofterspace.toolbox.date.DateUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +38,22 @@ public class UpcomingEvent {
         setDate(date);
 
         this.answerByUser = answer;
+    }
+
+    public boolean notificationIsNecessary() {
+
+        // only if the user has not yet answered...
+        if (answerByUser == null) {
+
+            // ... and the event is less than 7 days in the future...
+            if (DateUtils.isLessThanXDaysInTheFuture(date, 7)) {
+
+                // ... actually show a notification!
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -83,7 +101,7 @@ public class UpcomingEvent {
 
         SimpleDateFormat sdf = new SimpleDateFormat("d. M. yyyy");
 
-        return "am " + daysOfWeek[dayOfWeek] + " den " + sdf.format(date);
+        return daysOfWeek[dayOfWeek] + " den " + sdf.format(date);
     }
 
 }
